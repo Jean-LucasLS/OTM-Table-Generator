@@ -227,19 +227,18 @@ def main():
   st.text('')
 
   # Opções de flag para executar funções
-  col1, col2, col3, col4 = st.columns([2, 2, 2, 2])
+  col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 4])
   with col1:
     rate_geo_flag = st.checkbox('Rate Geo')
   with col2:
     rate_geo_cost_group_flag = st.checkbox('Rate Geo Cost Group')
   with col3:
+    rate_geo_cost_viagem_flag = st.checkbox('Rate Geo Cost (Viagem)')
+  with col4:
     if unity == 'UNPE':
       rate_geo_cost_ton_flag = st.checkbox('Rate Geo Cost (ton)')
     else:
       rate_geo_cost_ton_flag = False
-  with col4:
-    rate_geo_cost_viagem_flag = st.checkbox('Rate Geo Cost (Viagem)')
-
   st.text("")
 
   # Botão para upload de arquivo
@@ -263,14 +262,15 @@ def main():
       if rate_geo_cost_group_flag:
         with col2:
           st.download_button(label='Rate Geo Cost Group', data=csv_rate_geo_cost_group, file_name='rate_geo_cost_group.csv', mime='text/csv')
-    if rate_geo_cost_ton_flag:
-      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df)
-      with col3:
-        st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
     if rate_geo_cost_viagem_flag:
       csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df, unity=unity)
-      with col4:
+      with col3:
         st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv')
+    if rate_geo_cost_ton_flag:
+      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df)
+      with col4:
+        st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
+
 
 
     # Exibição do DataFrame
