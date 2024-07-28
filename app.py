@@ -274,6 +274,7 @@ def main():
 
 
     # Exibição do DataFrame
+    st.write('')
     st.dataframe(df, hide_index=True)
 
 if __name__ == '__main__':
