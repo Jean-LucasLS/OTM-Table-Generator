@@ -219,7 +219,7 @@ def main():
   with col3:
     st.markdown('📋 :rainbow[Download here the model table] ➡️')
   with col4:
-    model = pd.DataFrame({'ORIGEM': ['FSCB'], 'DESTINO': ['L123456789'], 'SAP': ['123456'], 'VEICULO': ['Y06'], 'FRETE': [44.44]})
+    model = pd.DataFrame({'ORIGEM': ['FSCB'], 'DESTINO': ['L123456789'], 'SAP': [123456], 'VEICULO': ['Y06'], 'FRETE': [44.44]})
     model = to_excel(model)
     if st.download_button(label='model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download the model used for upload'):
       st.toast('Model table downloaded!')
