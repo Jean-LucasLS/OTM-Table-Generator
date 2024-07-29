@@ -14,7 +14,7 @@ def to_excel(df):
   processed_data = output.getvalue()
   return processed_data
 
-st.set_page_config(page_title='OTM Table Generator', page_icon='📊', layout='wide')
+st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
 # Função principal para rodar a aplicação
 def main():
