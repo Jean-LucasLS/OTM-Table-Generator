@@ -273,7 +273,7 @@ def main():
     df['SAP'] = df['SAP'].astype(str)
 
     # Verificar flags e exibir botões de download
-    col1, col2, col3, col4, col5 = st.columns([0.75, 1, 1, 1, 4])
+    col1, col2, col3, col4, col5 = st.columns([0.75, 1, 1.25, 1, 4])
     if rate_geo_flag or rate_geo_cost_group_flag:
       csv_rate_geo, csv_rate_geo_cost_group = rate_geo(model=df, unity=unity)
       if rate_geo_flag:
