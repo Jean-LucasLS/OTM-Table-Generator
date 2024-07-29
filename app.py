@@ -13,10 +13,10 @@ def to_excel(df):
   processed_data = output.getvalue()
   return processed_data
 
-st.set_page_config(page_title='🗂️ OTM Table Generator 🗃️', page_icon='🤖', layout='wide')
+st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
 def main():
-  st.header(body='OTM Table Generator - SupriLog')
+  st.header(body='🗂️ OTM Table Generator - SupriLog 🗃️')
   st.text('')
   st.text('')
 
