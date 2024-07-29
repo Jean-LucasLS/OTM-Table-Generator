@@ -287,7 +287,7 @@ def main():
       with col3:
         st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv')
     if rate_geo_cost_ton_flag:
-      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df)
+      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity)
       with col4:
         st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
 
