@@ -17,9 +17,14 @@ def to_excel(df):
 
 origens = {'FBMU': 'FAB_MUC_2100',
   'DMBM': 'AMZ_AME_5400', 'DCAM': 'AMZ_CAM_5400', 'FRPL': 'FAB_LIM_5400',
+  'FSCB': 'FAB_SUZ_1101',
+  
+  'DTRI': 'AMZ_DRT_5400', 'DTRI': 'AMZ_DTR_1101',
 
   'FBMA': 'FAB_IMP_1301', 'FCIT': 'FAB_CIT_1064', 'FCBL': 'FAB_BEL_2283',
   'SMAR': 'CDL_MAR_2280', 'SVIA': 'CDL_CAR_1063', 'SSUZ': 'CDL_SUZ_1112',
+  
+  'FTLS': 'FAB_TLS_6800', 'DCOP': 'AMZ_DCO_1101', 'FJAC': 'FAB_JAC_6100'
   }
 
 equipms_unpe = {'Y02': 'SUZANO.Y02_TRUCK_UNPE',
@@ -58,13 +63,16 @@ def rate_geo(model, unity):
   if unity == 'UNBC':
     equipms = equipms_unbc
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
+  if unity == 'UNC':
+    model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
 
 
   model                                = model[~model['RATE_GEO_GID'].isna()]
   model['RATE_GEO_XID']                = model['RATE_GEO_GID'].str.replace('SUZANO.', '')
   model['RATE_OFFERING_GID']           = f'SUZANO.{unity}_0000' + model['SAP'].astype(str)
+  if unity != 'UNC':
+    model['EQUIPMENT_GROUP_PROFILE_GID'] = model['VEICULO'].map(equipms)
 
-  model['EQUIPMENT_GROUP_PROFILE_GID'] = model['VEICULO'].map(equipms)
   model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity}'
   model['ALLOW_UNCOSTED_LINE_ITEMS']   = 'N'
   model['IS_MASTER_OVERRIDES_BASE']    = 'N'
@@ -178,6 +186,8 @@ def rate_geo_cost_viagem(model, unity):
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
   if unity == 'UNBC':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
+  if unity == 'UNC':
+    model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   model['EFFECTIVE_DATE']          = format_date
   model['CHARGE_AMOUNT']           = model['CHARGE_AMOUNT'].round(2)
   model['LOW_VALUE2']              = model['DESTINO'].apply(lambda x: f'SUZANO.{x}')
@@ -208,7 +218,7 @@ st.set_page_config(page_title='OTM Table Generator', page_icon='📊', layout='w
 
 # Função principal para rodar a aplicação
 def main():
-  st.header(body='OTM Table Generator - SupriLog')
+  st.header(body='OTM Table Generator per Unity - SupriLog')
   st.text('')
   st.text('')
 
