@@ -213,7 +213,7 @@ def main():
   st.text('')
 
   # Lista suspensa para escolher a Unidade de Negócio
-  col1, col2, col3, col4 = st.columns([4, 5, 1, 1])
+  col1, col2, col3, col4 = st.columns([3, 6, 1, 1])
   with col1:
     unity = st.selectbox('Choose the Unity:', ('UNPE', 'UNBC', 'UNC'))
   with col3:
@@ -242,7 +242,9 @@ def main():
   st.text("")
 
   # Botão para upload de arquivo
-  df_path = st.file_uploader('Choose a .xlsx or .csv file', type=['xlsx', 'csv'])
+  col1, col2 = st.columns([2, 4])
+  with col1:
+    df_path = st.file_uploader('Choose a .xlsx or .csv file', type=['xlsx', 'csv'])
 
   if df_path is not None:
     # Leitura do arquivo
