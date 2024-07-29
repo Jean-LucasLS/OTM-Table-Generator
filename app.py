@@ -68,7 +68,6 @@ def main():
           csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity, min_cost=min_cost_flag)
       st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
 
-
     # Exibição do DataFrame
     st.write('')
     st.dataframe(df, hide_index=True,
