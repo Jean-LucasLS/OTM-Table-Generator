@@ -217,7 +217,7 @@ def main():
   with col1:
     unity = st.selectbox('Choose the Unity:', ('UNPE', 'UNBC', 'UNC'))
   with col3:
-    st.markdown('📋 :rainbow[Download the model table here] ➡️')
+    st.markdown('📥 :rainbow[Download the model table here] ➡️')
   with col4:
     model = pd.DataFrame({'ORIGEM': ['FSCB'], 'DESTINO': ['L123456789'], 'SAP': [123456], 'VEICULO': ['Y06'], 'FRETE': [44.44]})
     model = to_excel(model)
@@ -277,7 +277,14 @@ def main():
 
     # Exibição do DataFrame
     st.write('')
-    st.dataframe(df, hide_index=True)
+    st.dataframe(df, hide_index=True,
+                column_config={
+                'ORIGEM': st.column_config.TextColumn(label='📍 ORIGEM'),
+                'DESTINO': st.column_config.TextColumn(label='🎯 DESTINO'),
+                'SAP': st.column_config.TextColumn(label='🏷️ SAP'),
+                'VEICULO': st.column_config.TextColumn(label='🚚 VEICULO'),
+                'FRETE': st.column_config.NumberColumn(label='💸 FRETE', format='%.2f 💵')
+                })
 
 if __name__ == '__main__':
   main()
