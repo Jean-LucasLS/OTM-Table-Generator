@@ -208,7 +208,7 @@ st.set_page_config(page_title='OTM Table Generator', page_icon='📊', layout='w
 
 # Função principal para rodar a aplicação
 def main():
-  st.title('OTM Table Generator per Unity')
+  st.header(body='OTM Table Generator per Unity - SupriLog')
   st.text('')
   st.text('')
 
