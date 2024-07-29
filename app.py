@@ -115,7 +115,7 @@ def rate_geo(model, unity):
   rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
   return rate_geo, rate_geo_cost_group
 
-def rate_geo_cost_ton(model):
+def rate_geo_cost_ton(model, unity):
   model = model.rename(columns={'FRETE': 'CHARGE_AMOUNT'})
 
   #### Create rate_geo_cost Dataframe ####
@@ -133,11 +133,18 @@ def rate_geo_cost_ton(model):
   one_day_ago  = current_date - timedelta(days=1)
   format_date  = one_day_ago.strftime('%Y%m%d') + '030000'
 
-  model['RATE_GEO_COST_GROUP_GID'] = 'SUZANO.UNPE_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
+  if unity == 'UNC':
+    model['RATE_GEO_COST_GROUP_GID'] = 'SUZANO.UNPE_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
+  else:
+    model['RATE_GEO_COST_GROUP_GID'] = 'SUZANO.UNPE_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
+
   model['EFFECTIVE_DATE']          = format_date
   model['CHARGE_AMOUNT']           = model['CHARGE_AMOUNT'].round(2)
   model['LOW_VALUE2']              = model['DESTINO'].apply(lambda x: f'SUZANO.{x}')
-  model['MIN_COST']                = model.apply(lambda row: row['CHARGE_AMOUNT'] * min_ton[row['VEICULO']], axis=1)
+  if unity == 'UNC':
+    model['MIN_COST']                = model.apply(lambda row: row['CHARGE_AMOUNT'] * 25, axis=1)
+  else:
+    model['MIN_COST']                = model.apply(lambda row: row['CHARGE_AMOUNT'] * min_ton[row['VEICULO']], axis=1)
   model['MIN_COST']                = model['MIN_COST'].round(2)
 
   model['CHARGE_MULTIPLIER_OPTION'] = 'A'
@@ -187,7 +194,8 @@ def rate_geo_cost_viagem(model, unity):
   if unity == 'UNBC':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   if unity == 'UNC':
-    model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
+    model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
+
   model['EFFECTIVE_DATE']          = format_date
   model['CHARGE_AMOUNT']           = model['CHARGE_AMOUNT'].round(2)
   model['LOW_VALUE2']              = model['DESTINO'].apply(lambda x: f'SUZANO.{x}')
