@@ -150,8 +150,8 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
      model['MIN_COST']                = model.apply(lambda row: row['CHARGE_AMOUNT'] * 25, axis=1)
     else:
       model['MIN_COST']               = model.apply(lambda row: row['CHARGE_AMOUNT'] * min_ton[row['VEICULO']], axis=1)
-    model['MIN_COST']                = model['MIN_COST'].round(2)
-    model['MIN_COST_CURRENCY_GID']    = 'BRL'
+    model['MIN_COST']              = model['MIN_COST'].round(2)
+    model['MIN_COST_CURRENCY_GID'] = 'BRL'
 
   model['CHARGE_MULTIPLIER_OPTION'] = 'A'
   model['MIN_COST_CURRENCY_GID']    = 'BRL'
@@ -261,6 +261,8 @@ def main():
   with col4:
     if unity == 'UNPE' or unity == 'UNC':
       rate_geo_cost_ton_flag = st.checkbox('Rate Geo Cost (ton)')
+      if unity == 'UNC' and rate_geo_cost_ton_flag:
+        min_cost_flag = st.checkbox('min_cost')
     else:
       rate_geo_cost_ton_flag = False
   st.text("")
@@ -293,7 +295,7 @@ def main():
       with col3:
         st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv')
     if rate_geo_cost_ton_flag:
-      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity)
+      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity, min_cost=min_cost_flag)
       with col4:
         st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
 
