@@ -217,11 +217,11 @@ def main():
   with col1:
     unity = st.selectbox('Choose the Unity:', ('UNPE', 'UNBC', 'UNC'))
   with col3:
-    st.markdown('📋 :rainbow[Download here the model table] ➡️')
+    st.markdown('📋 :rainbow[Download the model table here] ➡️')
   with col4:
     model = pd.DataFrame({'ORIGEM': ['FSCB'], 'DESTINO': ['L123456789'], 'SAP': [123456], 'VEICULO': ['Y06'], 'FRETE': [44.44]})
     model = to_excel(model)
-    if st.download_button(label='model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download the model used for upload'):
+    if st.download_button(label='model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download the model table used for upload'):
       st.toast('Model table downloaded!')
 
   st.text('')
