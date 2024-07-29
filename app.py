@@ -231,7 +231,7 @@ def main():
   st.text('')
 
   # Lista suspensa para escolher a Unidade de Negócio
-  col1, col2, col3, col4 = st.columns([3, 6, 1, 1])
+  col1, col2, col3, col4 = st.columns([3, 6, 1.25, 1])
   with col1:
     unity = st.selectbox('Choose the Unity:', ('UNPE', 'UNBC', 'UNC'))
   with col3:
