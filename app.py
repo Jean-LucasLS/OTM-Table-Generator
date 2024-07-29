@@ -253,7 +253,7 @@ def main():
   with col3:
     rate_geo_cost_viagem_flag = st.checkbox('Rate Geo Cost (Viagem)')
   with col4:
-    if unity == 'UNPE':
+    if unity == 'UNPE' or unity == 'UNC':
       rate_geo_cost_ton_flag = st.checkbox('Rate Geo Cost (ton)')
     else:
       rate_geo_cost_ton_flag = False
