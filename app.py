@@ -23,35 +23,18 @@ def main():
   st.text('')
 
   # Lista suspensa para escolher a Unidade de Negócio
-  col1, col2, col3, col4 = st.columns([3, 6, 1.25, 1])
+  col1, col2, col3, col4, col5 = st.columns([3, 1, 5, 1.25, 1])
   with col1:
     unity = st.selectbox('Choose the Unity:', ('UNPE', 'UNBC', 'UNC'))
-  with col3:
-    st.markdown('📥 :rainbow[Download the model table here] ➡️')
   with col4:
+    st.markdown('📥 :rainbow[Download the model table here] ➡️')
+  with col5:
     model = pd.DataFrame({'ORIGEM': ['FSCB'], 'DESTINO': ['L123456789'], 'SAP': [123456], 'VEICULO': ['Y06'], 'FRETE': [44.44]})
     model = to_excel(model)
     if st.download_button(label='model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download the model table used for upload'):
       st.toast('Model table downloaded!')
 
   st.text('')
-
-  # Opções de flag para executar funções
-  col1, col2, col3, col4, col5 = st.columns([2, 2, 2, 2, 4])
-  with col1:
-    rate_geo_flag = st.checkbox('Rate Geo')
-  with col2:
-    rate_geo_cost_group_flag = st.checkbox('Rate Geo Cost Group')
-  with col3:
-    rate_geo_cost_viagem_flag = st.checkbox('Rate Geo Cost (Viagem)')
-  with col4:
-    if unity == 'UNPE' or unity == 'UNC':
-      rate_geo_cost_ton_flag = st.checkbox('Rate Geo Cost (ton)')
-      if unity == 'UNC' and rate_geo_cost_ton_flag:
-        min_cost_flag = st.checkbox('min_cost')
-    else:
-      rate_geo_cost_ton_flag = False
-  st.text("")
 
   # Botão para upload de arquivo
   col1, col2 = st.columns([2, 4])
@@ -67,24 +50,23 @@ def main():
     df['SAP'] = df['SAP'].astype(str)
 
     # Verificar flags e exibir botões de download
-    col1, col2, col3, col4, col5 = st.columns([0.75, 1, 1.25, 1, 4])
-    if rate_geo_flag or rate_geo_cost_group_flag:
-      csv_rate_geo, csv_rate_geo_cost_group = rate_geo(model=df, unity=unity)
-      if rate_geo_flag:
-        with col1:
-          st.download_button(label='Rate Geo', data=csv_rate_geo, file_name='rate_geo.csv', mime='text/csv')
-      if rate_geo_cost_group_flag:
-        with col2:
-          st.download_button(label='Rate Geo Cost Group', data=csv_rate_geo_cost_group, file_name='rate_geo_cost_group.csv', mime='text/csv')
-    if rate_geo_cost_viagem_flag:
-      csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df, unity=unity)
-      with col3:
-        st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv')
-    if rate_geo_cost_ton_flag:
-      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity, min_cost=min_cost_flag)
-      with col4:
-        st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
+    col1, col2, col3, col4, col5, col6 = st.columns([0.75, 1, 1, 0.8, 1, 2])
 
+    with col1:
+      csv_rate_geo, csv_rate_geo_cost_group = rate_geo(model=df, unity=unity)
+      st.download_button(label='Rate Geo', data=csv_rate_geo, file_name='rate_geo.csv', mime='text/csv')
+    with col2:
+      st.download_button(label='Rate Geo Cost Group', data=csv_rate_geo_cost_group, file_name='rate_geo_cost_group.csv', mime='text/csv')
+    with col3:
+      csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df, unity=unity)
+      st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv')
+    with col4:
+      csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity, min_cost=True)
+      if unity == 'UNC':
+        with col5:
+          min_cost_flag = st.checkbox('min_cost')
+          csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df, unity=unity, min_cost=min_cost_flag)
+      st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv')
 
 
     # Exibição do DataFrame
