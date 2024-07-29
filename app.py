@@ -154,7 +154,6 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
     model['MIN_COST_CURRENCY_GID'] = 'BRL'
 
   model['CHARGE_MULTIPLIER_OPTION'] = 'A'
-  model['MIN_COST_CURRENCY_GID']    = 'BRL'
   model['CHARGE_UNIT_UOM_CODE']     = 'MTON'
   model['ALLOW_ZERO_RBI_VALUE']     = 'N'
   model['CHARGE_CURRENCY_GID']      = 'BRL'
