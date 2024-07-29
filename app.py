@@ -283,7 +283,7 @@ def main():
                 'DESTINO': st.column_config.TextColumn(label='🎯 DESTINO'),
                 'SAP': st.column_config.TextColumn(label='🏷️ SAP'),
                 'VEICULO': st.column_config.TextColumn(label='🚚 VEICULO'),
-                'FRETE': st.column_config.NumberColumn(label='💸 FRETE', format='R$ %f')
+                'FRETE': st.column_config.NumberColumn(label='💸 FRETE', format='%.2f R$')
                 })
 
 if __name__ == '__main__':
