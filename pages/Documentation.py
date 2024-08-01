@@ -9,10 +9,7 @@ model = pd.DataFrame({'ORIGEM': ['FSCB', 'FAB_SUZ_1101'], 'DESTINO': ['L12345678
 
 st.set_page_config(page_title='Documentation', page_icon='🤖', layout='wide')
 
-
-col1, col2 = st.columns([1, 0.5])
-with col1:
-  st.header(body='🗂️ Documentation 🗃️', divider='green')
+st.header(body='🗂️ Documentation 🗃️', divider='green')
 st.text('')
 st.markdown('1. O modelo de tabela deve conter as colunas do modelo (disponível para download)')
 st.dataframe(model, hide_index=True,

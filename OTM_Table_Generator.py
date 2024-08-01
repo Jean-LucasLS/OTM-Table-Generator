@@ -16,9 +16,7 @@ def to_excel(df):
 st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
 def main():
-  col1, col2 = st.columns([1, 0.5])
-  with col1:
-    st.header(body='🗂️ OTM Table Generator - SupriLog 🗃️', divider='green')
+  st.header(body='🗂️ OTM Table Generator - SupriLog 🗃️', divider='green')
   st.text('')
   st.text('')
 
