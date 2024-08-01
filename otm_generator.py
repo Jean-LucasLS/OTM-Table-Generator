@@ -72,18 +72,24 @@ def rate_geo(model, unity):
   if unity == 'UNPE':
     equipms = equipms_unpe
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
-  if unity == 'UNBC':
+  elif unity == 'UNBC':
     equipms = equipms_unbc
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
-  if unity == 'UNC':
+  elif unity == 'UNC':
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
-
 
   model                                = model[~model['RATE_GEO_GID'].isna()]
   model['RATE_GEO_XID']                = model['RATE_GEO_GID'].str.replace('SUZANO.', '')
-  model['RATE_OFFERING_GID']           = f'SUZANO.{unity}_0000' + model['SAP'].astype(str)
+
+  model['RATE_OFFERING_GID'] = model.apply(lambda row: 
+    f'SUZANO.{unity}_0000{row["SAP"]}_CD_SUZANO' if row['ORIGEM'] == 'SSUZ' or row['ORIGEM'] == 'CDL_SUZ_1112' # row['ORIGEM'] in origens_suz
+    else f'SUZANO.{unity}_0000{row["SAP"]}', axis=1)
+
   if unity != 'UNC':
-    model['EQUIPMENT_GROUP_PROFILE_GID'] = model['VEICULO'].map(equipms)
+    model['EQUIPMENT_GROUP_PROFILE_GID'] = model.apply(lambda row: 
+      f"{equipms.get(row['VEICULO'], '')}_CD_SUZANO" if row['ORIGEM'] == 'SSUZ' or row['ORIGEM'] == 'CDL_SUZ_1112' # row['ORIGEM'] in origens_suz
+      else equipms.get(row['VEICULO'], ''), axis=1)
+
 
   model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity}'
   model['ALLOW_UNCOSTED_LINE_ITEMS']   = 'N'
