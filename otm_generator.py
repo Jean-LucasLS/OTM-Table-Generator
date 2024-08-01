@@ -72,18 +72,24 @@ def rate_geo(model, unity):
   if unity == 'UNPE':
     equipms = equipms_unpe
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
-  if unity == 'UNBC':
+  elif unity == 'UNBC':
     equipms = equipms_unbc
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
-  if unity == 'UNC':
+  elif unity == 'UNC':
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
-
 
   model                                = model[~model['RATE_GEO_GID'].isna()]
   model['RATE_GEO_XID']                = model['RATE_GEO_GID'].str.replace('SUZANO.', '')
-  model['RATE_OFFERING_GID']           = f'SUZANO.{unity}_0000' + model['SAP'].astype(str)
+
+  model['RATE_OFFERING_GID'] = model.apply(lambda row: 
+    f'SUZANO.{unity}_0000{row["SAP"]}_CD_SUZANO' if row['ORIGEM'] == 'SSUZ' or row['ORIGEM'] == 'CDL_SUZ_1112' # row['ORIGEM'] in origens_suz
+    else f'SUZANO.{unity}_0000{row["SAP"]}', axis=1)
+
   if unity != 'UNC':
-    model['EQUIPMENT_GROUP_PROFILE_GID'] = model['VEICULO'].map(equipms)
+    model['EQUIPMENT_GROUP_PROFILE_GID'] = model.apply(lambda row: 
+      f"{equipms.get(row['VEICULO'], '')}_CD_SUZANO" if row['ORIGEM'] == 'SSUZ' or row['ORIGEM'] == 'CDL_SUZ_1112' # row['ORIGEM'] in origens_suz
+      else equipms.get(row['VEICULO'], ''), axis=1)
+
 
   model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity}'
   model['ALLOW_UNCOSTED_LINE_ITEMS']   = 'N'
@@ -123,8 +129,8 @@ def rate_geo(model, unity):
 
   rate_geo_cost_group = pd.concat([df_rgcg, modelcg], ignore_index=True)
 
-  rate_geo            = rate_geo.to_csv(index=False)
-  rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
+  # rate_geo            = rate_geo.to_csv(index=False)
+  # rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
   return rate_geo, rate_geo_cost_group
 
 def rate_geo_cost_ton(model, unity, min_cost=True):
@@ -184,7 +190,7 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
 
   rate_geo_cost_ton = pd.concat([df_rgct, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].isna()]
-  rate_geo_cost_ton = rate_geo_cost_ton.to_csv(index=False)
+  # rate_geo_cost_ton = rate_geo_cost_ton.to_csv(index=False)
   return rate_geo_cost_ton
 
 def rate_geo_cost_viagem(model, unity):
@@ -235,5 +241,5 @@ def rate_geo_cost_viagem(model, unity):
 
   rate_geo_cost_viagem = pd.concat([df_rgcv, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].isna()]
-  rate_geo_cost_viagem = rate_geo_cost_viagem.to_csv(index=False)
+  # rate_geo_cost_viagem = rate_geo_cost_viagem.to_csv(index=False)
   return rate_geo_cost_viagem
