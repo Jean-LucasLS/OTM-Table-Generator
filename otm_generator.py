@@ -129,8 +129,8 @@ def rate_geo(model, unity):
 
   rate_geo_cost_group = pd.concat([df_rgcg, modelcg], ignore_index=True)
 
-  # rate_geo            = rate_geo.to_csv(index=False)
-  # rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
+  rate_geo            = rate_geo.to_csv(index=False)
+  rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
   return rate_geo, rate_geo_cost_group
 
 def rate_geo_cost_ton(model, unity, min_cost=True):
@@ -190,7 +190,7 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
 
   rate_geo_cost_ton = pd.concat([df_rgct, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].isna()]
-  # rate_geo_cost_ton = rate_geo_cost_ton.to_csv(index=False)
+  rate_geo_cost_ton = rate_geo_cost_ton.to_csv(index=False)
   return rate_geo_cost_ton
 
 def rate_geo_cost_viagem(model, unity):
@@ -241,5 +241,5 @@ def rate_geo_cost_viagem(model, unity):
 
   rate_geo_cost_viagem = pd.concat([df_rgcv, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].isna()]
-  # rate_geo_cost_viagem = rate_geo_cost_viagem.to_csv(index=False)
+  rate_geo_cost_viagem = rate_geo_cost_viagem.to_csv(index=False)
   return rate_geo_cost_viagem
