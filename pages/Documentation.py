@@ -61,7 +61,7 @@ with col5:
   st.text('');  st.text('')
   st.dataframe(model4, hide_index=True)
 
-st.markdown('📌 :green-background[Origens incorretas] e/ou não listadas no dicionário serão :red-background[excluídas das tabelas geradas] para evitar cadastros incorretos, :green-background[e evidenciadas] em uma tabela a parte :green-background[mostrando os índices das linhas incorretas]')
+st.markdown('📌 :green-background[Origens incorretas] e/ou não listadas no dicionário serão :red-background[excluídas das tabelas geradas] para evitar cadastros incorretos, e :green-background[evidenciadas] em uma tabela a parte :green-background[mostrando os índices das linhas incorretas]')
 col1, col2, col3, col4 = st.columns([1.25, 0.25, 2, 4])
 with col1:
   st.dataframe(model5)
