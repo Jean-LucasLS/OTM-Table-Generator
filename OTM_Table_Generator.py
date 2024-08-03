@@ -16,8 +16,7 @@ def to_excel(df):
 st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
 def main():
-  st.header(body='🤖 OTM Table Generator - SupriLog 📤', divider='green')
-  st.text('')
+  st.header(body='🤖 OTM Table Generator - SupriLog 📤', divider='green');  st.text('')
 
   ## Unity drop-down list / Model (.xlsx) download ##
   col1, col2, col3,= st.columns([3, 5, 2])
@@ -32,7 +31,7 @@ def main():
   st.text('')
 
   ## Upload file button (.xlsx or .csv) ##
-  col1, col2 = st.columns([2, 3])
+  col1, col2 = st.columns([2, 2])
   with col1:
     df_path = st.file_uploader('Escolha um arquivo .xlsx ou .csv', type=['xlsx', 'csv'])
 
@@ -68,10 +67,10 @@ def main():
           st.toast('Rate Geo Cost (ton) table downloaded!')
 
     ## Model and Not-Mapped DataFrames View ##
-    st.write('')
+    st.text('')
     col1, col2 = st.columns(2)
     with col1:
-      st.write('')
+      st.text('')
       st.dataframe(df, hide_index=True,
                 column_config={
                 'ORIGEM': st.column_config.TextColumn(label='📍 ORIGEM'),
@@ -82,7 +81,7 @@ def main():
                 })
     with col2:
       if not_mapped.shape[0] != 0:
-        st.write('❗ Not-mapped origins')
+        st.text('');  st.write('❗ Not-mapped origins')
         st.dataframe(not_mapped,
                     column_config={
                       'Index': st.column_config.TextColumn(label='Index'),
