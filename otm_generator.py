@@ -5,29 +5,29 @@ import numpy as np
 
 origens = {'FBMU': 'FAB_MUC_2100', 'FAB_MUC_2100': 'FAB_MUC_2100', # MUC
   ## LIM ## 
-  'DMBM': 'AMZ_AME_5400', 'AMZ_AME_5400': 'AMZ_AME_5400',
   'DCAM': 'AMZ_CAM_5400', 'AMZ_CAM_5400': 'AMZ_CAM_5400',
+  'DMBM': 'AMZ_AME_5400', 'AMZ_AME_5400': 'AMZ_AME_5400',
   'FRPL': 'FAB_LIM_5400', 'FAB_LIM_5400': 'FAB_LIM_5400', 
   'AMZ_DRT_5400': 'AMZ_DRT_5400', # 'DTRI': 'AMZ_DRT_5400',
   ## SUZ ##
-  'FSCB': 'FAB_SUZ_1101', 'FAB_SUZ_1101': 'FAB_SUZ_1101',
-  'DTRI': 'AMZ_DTR_1101', 'AMZ_DTR_1101': 'AMZ_DTR_1101',
   'DCOP': 'AMZ_DCO_1101', 'AMZ_DCO_1101': 'AMZ_DCO_1101',
   'DPNS': 'AMZ_PSN_1101', 'AMZ_PSN_1101': 'AMZ_PSN_1101',
   'DSUZ': 'AMZ_SZL_1001', 'AMZ_SZL_1101': 'AMZ_SZL_1101',
-  'SSUZ': 'CDL_SUZ_1112', 'CDL_SUZ_1112': 'CDL_SUZ_1112',
+  'DTRI': 'AMZ_DTR_1101', 'AMZ_DTR_1101': 'AMZ_DTR_1101',
+  'FSCB': 'FAB_SUZ_1101', 'FAB_SUZ_1101': 'FAB_SUZ_1101',
   'FSCC': 'FAB_RVD_1102', 'FAB_RVD_1102': 'FAB_RVD_1102',
   'CDRZ': 'CDR_SUZ_1062', 'CDR_SUZ_1062': 'CDR_SUZ_1062',
+  'SSUZ': 'CDL_SUZ_1112', 'CDL_SUZ_1112': 'CDL_SUZ_1112',
   ## Outros ##
-  'FBMA': 'FAB_IMP_1301', 'FAB_IMP_1301': 'FAB_IMP_1301',
-  'FCIT': 'FAB_CIT_1064', 'FAB_CIT_1064': 'FAB_CIT_1064',
-  'FCBL': 'FAB_BEL_2283', 'FAB_BEL_2283': 'FAB_BEL_2283',
-  'SMAR': 'CDL_MAR_2280', 'CDL_MAR_2280': 'CDL_MAR_2280',
   'SVIA': 'CDL_CAR_1063', 'CDL_CAR_1063': 'CDL_CAR_1063',
-  'FTLS': 'FAB_TLS_6800', 'FAB_TLS_6800': 'FAB_TLS_6800',
+  'FCIT': 'FAB_CIT_1064', 'FAB_CIT_1064': 'FAB_CIT_1064',
+  'FBMA': 'FAB_IMP_1301', 'FAB_IMP_1301': 'FAB_IMP_1301',
+  'SMAR': 'CDL_MAR_2280', 'CDL_MAR_2280': 'CDL_MAR_2280',
+  'FCBL': 'FAB_BEL_2283', 'FAB_BEL_2283': 'FAB_BEL_2283',
+  'FBRP': 'FAB_RIB_2298', 'FAB_RIB_2298': 'FAB_RIB_2298',
   'FJAC': 'FAB_JAC_6100', 'FAB_JAC_6100': 'FAB_JAC_6100',
   'FARA': 'FAB_ARA_6300', 'FAB_ARA_6300': 'FAB_ARA_6300',
-  'FBRP': 'FAB_RIB_2298', 'FAB_RIB_2298': 'FAB_RIB_2298',
+  'FTLS': 'FAB_TLS_6800', 'FAB_TLS_6800': 'FAB_TLS_6800',
   }
 
 origens_suz = { 'FSCB': 'FAB_SUZ_1101', 'FAB_SUZ_1101': 'FAB_SUZ_1101',
@@ -56,6 +56,11 @@ veiculos_unbc = {
 min_ton = {'Y02': 12.5, 'Y06': 25, 'Y12': 25, 'Y17': 36, 'Y23': 45}
 
 def rate_geo(model, unity):
+
+  #### Not-mapped origins verifying ####
+  not_mapped               = model.copy()
+  not_mapped['NOT_MAPPED'] = model['ORIGEM'].map(origens)
+  not_mapped               = model[model['NOT_MAPPED'].isna()]
 
   #### Create rate_geo Dataframe ####
 
@@ -89,7 +94,6 @@ def rate_geo(model, unity):
     model['EQUIPMENT_GROUP_PROFILE_GID'] = model.apply(lambda row: 
       f"{equipms.get(row['VEICULO'], '')}_CD_SUZANO" if row['ORIGEM'] == 'SSUZ' or row['ORIGEM'] == 'CDL_SUZ_1112' # row['ORIGEM'] in origens_suz
       else equipms.get(row['VEICULO'], ''), axis=1)
-
 
   model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity}'
   model['ALLOW_UNCOSTED_LINE_ITEMS']   = 'N'
