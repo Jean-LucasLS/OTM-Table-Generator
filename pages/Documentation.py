@@ -23,7 +23,7 @@ with col2:
   model_excel = to_excel(model)
   if st.download_button(label='📥 model.xlsx', data=model_excel, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download da tabela modelo'):
     st.toast('Model table downloaded!')
-st.markdown('📌 As colunas são ORIGEM | DESTINO | SAP | VEICULO | FRETE')
+st.markdown('📌 As colunas são ORIGEM | DESTINO | SAP | VEICULO | FRETE, e acusarão erro caso não estejam neste formato')
 st.dataframe(model, hide_index=True,
             column_config={
             'ORIGEM': st.column_config.TextColumn(label='📍 ORIGEM'),
@@ -61,7 +61,7 @@ with col5:
   st.text('');  st.text('')
   st.dataframe(model4, hide_index=True)
 
-st.markdown('📌 :green-background[Origens incorretas] e/ou não listadas no dicionário serão :red-background[excluídas das tabelas geradas] para evitar cadastros incorretos, e evidenciadas em uma tabela a parte :green-background[mostrando os índices das linhas incorretas]')
+st.markdown('📌 :green-background[Origens incorretas] e/ou não listadas no dicionário serão :red-background[excluídas das tabelas geradas] para evitar cadastros incorretos, :green-background[e evidenciadas] em uma tabela a parte :green-background[mostrando os índices das linhas incorretas]')
 col1, col2, col3, col4 = st.columns([1.25, 0.25, 2, 4])
 with col1:
   st.dataframe(model5)
