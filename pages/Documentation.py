@@ -36,7 +36,7 @@ st.divider()
 
 st.subheader('📑 Os campos de ORIGEM podem ser escritos tanto no formato SAP quanto OTM e devem constar no dicionário')
 st.markdown('📌 Tanto FSCB quanto FAB_SUZ_1101 irão resultar em FAB_SUZ_1101')
-col1, col2, col3, col4 = st.columns([1, 0.25, 1, 6])
+col1, col2, col3, col4 = st.columns([0.75, 0.25, 1, 3])
 with col1:
   st.dataframe(model['ORIGEM'], hide_index=True, column_config={'ORIGEM': st.column_config.TextColumn(label='📍 ORIGEM')})
 with col2:
@@ -45,7 +45,7 @@ with col3:
   st.dataframe(model2, hide_index=True)
 
 st.markdown('📌 Rate Geo e Rate Geo Cost Group terão as :green-background[duplicatas removidas] para :red-background[evitar o cadastro de dois ID iguais]')
-col1, col2, col3, col4, col5 = st.columns([1.5, 0.25, 1, 0.25, 1])
+col1, col2, col3, col4, col5 = st.columns([1.25, 0.2, 1, 0.2, 1.25])
 with col1:
   st.dataframe(model3, hide_index=True, column_config={'💸 FRETE': st.column_config.NumberColumn(format='%.2f R$')})
 with col2:
@@ -56,22 +56,13 @@ with col3:
                                                                            'VEICULO': st.column_config.TextColumn(label='🚚 VEICULO')})
 with col4:
   st.text('');  st.text('');  st.text('');  st.text('')
-  st.markdown('↙️↙️')
-col5, col6, col7, col8, col9 = st.columns([0.25, 2, 0.25, 2.25, 3.25])
+  st.markdown('➡️➡️')
 with col5:
-  st.text('');  st.text('');  st.text('');  st.text('')
-  st.markdown('➡️➡️')
-with col6:
-  st.text('');  st.text('')
-  st.dataframe(model3[['📍 ORIGEM', '🏷️ SAP', '🚚 VEICULO']].drop_duplicates(), hide_index=True)
-with col7:
-  st.text('');  st.text('');  st.text('');  st.text('')
-  st.markdown('➡️➡️')
-with col8:
   st.text('');  st.text('')
   st.dataframe(model4, hide_index=True)
+
 st.markdown('📌 :green-background[Origens incorretas] e/ou não listadas no dicionário serão :red-background[excluídas das tabelas geradas] para evitar cadastros incorretos, e evidenciadas em uma tabela a parte :green-background[mostrando os índices das linhas incorretas]')
-col1, col2, col3, col4 = st.columns([1.5, 0.25, 2, 4])
+col1, col2, col3, col4 = st.columns([1.25, 0.25, 2, 4])
 with col1:
   st.dataframe(model5)
 with col2:
