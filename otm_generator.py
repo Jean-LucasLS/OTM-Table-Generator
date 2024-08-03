@@ -59,8 +59,10 @@ def rate_geo(model, unity):
 
   #### Not-mapped origins verifying ####
   not_mapped               = model.copy()
-  not_mapped['NOT_MAPPED'] = model['ORIGEM'].map(origens)
-  not_mapped               = model[model['NOT_MAPPED'].isna()]
+  not_mapped['NOT_MAPPED'] = not_mapped['ORIGEM'].map(origens)
+  not_mapped               = not_mapped[not_mapped['NOT_MAPPED'].isna()]
+  not_mapped               = not_mapped.rename_axis('Index')
+  not_mapped               = not_mapped['ORIGEM']
 
   #### Create rate_geo Dataframe ####
 
@@ -135,7 +137,7 @@ def rate_geo(model, unity):
 
   rate_geo            = rate_geo.to_csv(index=False)
   rate_geo_cost_group = rate_geo_cost_group.to_csv(index=False)
-  return rate_geo, rate_geo_cost_group
+  return rate_geo, rate_geo_cost_group, not_mapped
 
 def rate_geo_cost_ton(model, unity, min_cost=True):
   model = model.rename(columns={'FRETE': 'CHARGE_AMOUNT'})
