@@ -59,7 +59,7 @@ st.markdown('📌 :green-background[Consultar o dicionário das origens] com o t
 st.divider()
 
 st.subheader("📑 Tratamento de duplicatas nos ID's")
-st.markdown("📌 Rate Geo e Rate Geo Cost Group terão as :green-background[duplicatas removidas] para :red-background[evitar o cadastro de dois ID's iguais]")
+st.markdown("📌 Rate Geo e Rate Geo Cost Group terão as :blue-background[duplicatas removidas] no :green-background[agrupamento ORIGEM + SAP + VEICULO], para :red-background[evitar o cadastro de dois ID's iguais]")
 col1, col2, col3, col4, col5 = st.columns([1.25, 0.2, 1, 0.2, 1.25])
 with col1:
   st.dataframe(model3, hide_index=True, column_config={'💸 FRETE': st.column_config.NumberColumn(format='%.2f R$')})
