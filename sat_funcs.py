@@ -1,6 +1,6 @@
 import pandas as pd
 
-from dicts import origens_suz, origens, equipms_unpe, equipms_unbc, veiculos_unbc
+from dicts import origens_suz, origens, equipms_unpe, equipms_unbc, veiculos_unbc, min_ton
 
 def not_mapped_check(model):
   not_mapped               = model.copy()
@@ -48,7 +48,7 @@ def build_model_rg(model, unity):
   model['DOMAIN_NAME']                 = 'SUZANO'
   model['X_LANE_GID']                  = 'SUZANO.' + model['ORIGEM'].map(origens) + '_BRA'
   model['IS_QUOTE']                    = 'N'
-  
+
   if unity == 'UNPE':
     equipms = equipms_unpe
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
@@ -67,5 +67,45 @@ def build_model_rg(model, unity):
   ## Adding mult to UNPE ##
   if unity == 'UNPE':
     model = suz_mult(model)
+
+  return model
+
+def min_cost_calculation(model, unity):
+  if unity == 'UNC':
+    model['MIN_COST'] = model.apply(lambda row: row['CHARGE_AMOUNT'] * 25, axis=1)
+  else:
+    model['MIN_COST'] = model.apply(lambda row: row['CHARGE_AMOUNT'] * min_ton[row['VEICULO']], axis=1)
+  model['MIN_COST']              = model['MIN_COST'].round(2)
+  model['MIN_COST_CURRENCY_GID'] = 'BRL'
+  return model
+
+def format_date():
+  from datetime import datetime, timedelta
+
+  current_date = datetime.now()
+  one_day_ago  = current_date - timedelta(days=1)
+  format_date  = one_day_ago.strftime('%Y%m%d') + '030000'
+  return format_date
+
+def rate_geo_cost_cols(model):
+  model['EFFECTIVE_DATE'] = format_date()
+  model['CHARGE_AMOUNT']  = model['CHARGE_AMOUNT'].round(2)
+  model['LOW_VALUE2']     = model['DESTINO'].apply(lambda x: f'SUZANO.{x}')
+
+  model['CHARGE_MULTIPLIER_OPTION'] = 'A'
+  model['ALLOW_ZERO_RBI_VALUE']     = 'N'
+  model['CHARGE_CURRENCY_GID']      = 'BRL'
+  model['IS_FILED_AS_TARIFF']       = 'N'
+  model['CHARGE_UNIT_COUNT']        = '1'
+  model['LEFT_OPERAND1']            = 'SHIPMENT.STOPS.SHIPUNITS.ACTIVITY'
+  model['LEFT_OPERAND2']            = 'SHIPMENT.DEST.REGION'
+  model['CHARGE_ACTION']            = 'A'
+  model['CHARGE_TYPE']              = 'B'
+  model['DOMAIN_NAME']              = 'SUZANO'
+  model['LOW_VALUE1']               = 'D'
+  model['OPER1_GID']                = 'EQ'
+  model['OPER2_GID']                = 'EQ'
+  model['COST_TYPE']                = 'C'
+  model['AND_OR1']                  = 'A'
 
   return model
