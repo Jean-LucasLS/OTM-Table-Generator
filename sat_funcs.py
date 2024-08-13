@@ -41,6 +41,7 @@ def build_model_rg(model, unity):
   model['ROUNDING_FIELDS_LEVEL']       = '0'
   model['ROUNDING_APPLICATION']        = 'A'
   model['HAZARDOUS_RATE_TYPE']         = 'A'
+  model['RATE_OFFERING_GID']           = f'SUZANO.{unity}_0000' + model['SAP'].astype(str)
   model['IS_SOURCING_RATE']            = 'N'
   model['IS_FROM_BEYOND']              = 'Y'
   model['RATE_GEO_DESC']               = 'SAW'
