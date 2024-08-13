@@ -143,4 +143,13 @@ def multicoleta(model):
   mults['ATTRIBUTE_NUMBER1'] = pd.to_numeric(mults['ATTRIBUTE_NUMBER1'], errors='coerce').astype('Int64')
   df_mults                   = pd.concat([df_mults, mults.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
 
+  new_row   = pd.DataFrame([['RATE_GEO_COST'] + [np.nan] * (df_mults.shape[1] - 1)], columns=df_mults.columns)
+  df_header = pd.concat([new_row, df_mults], ignore_index=True)
+
+  new_header        = df_header.iloc[0]
+  df_header         = df_header[1:]
+  df_header.columns = new_header
+  old_header        = pd.DataFrame([df_mults.columns], columns=df_header.columns)
+  df_mults          = pd.concat([old_header, df_header], ignore_index=True)
+
   return df_mults
