@@ -21,7 +21,7 @@ def main():
   ## Unity drop-down list / Model (.xlsx) download ##
   col1, col2, col3,= st.columns([3, 5, 2])
   with col1:
-    unity = st.selectbox('Escolha a Unidade de Negócio:', ('UNPE', 'UNBC', 'UNC'))
+    unity = st.selectbox('Escolha a Unidade de Negócio:', ('UNPE', 'UNPE_CABOTAGEM', 'UNBC', 'UNC'))
   with col3:
     model = pd.DataFrame({'ORIGEM': ['FSCB', 'FAB_SUZ_1101'], 'DESTINO': ['L123456789', 'L123456789'], 'SAP': [123456, 123456], 'VEICULO': ['Y06', 'Y06'], 'FRETE': [44.44, 44.44]})
     model = to_excel(model)
@@ -57,7 +57,7 @@ def main():
       if st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv'):
         st.toast('Rate Geo Cost (viagem) table downloaded!')
     with col4:
-      if unity != 'UNBC':
+      if unity != 'UNBC' and unity != 'UNPE_CABOTAGEM':
         csv_rate_geo_cost_ton, csv_df_mults = rate_geo_cost_ton(model=df, unity=unity, min_cost=True)
         if unity == 'UNC':
           with col5:

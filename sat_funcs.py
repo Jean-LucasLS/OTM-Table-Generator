@@ -34,14 +34,19 @@ def rate_offering_gid(model, unity, equipms):
   return model
 
 def build_model_rg(model, unity):
-  model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity}'
+  if unity == 'UNPE_CABOTAGEM':
+    unity_name = 'UNPE'
+  else:
+    unity_name = unity
+
+  model['FLEX_COMMODITY_PROFILE_GID']  = f'SUZANO.COP_{unity_name}'
   model['ALLOW_UNCOSTED_LINE_ITEMS']   = 'N'
   model['IS_MASTER_OVERRIDES_BASE']    = 'N'
   model['MULTI_BASE_GROUPS_RULE']      = 'A'
   model['ROUNDING_FIELDS_LEVEL']       = '0'
   model['ROUNDING_APPLICATION']        = 'A'
   model['HAZARDOUS_RATE_TYPE']         = 'A'
-  model['RATE_OFFERING_GID']           = f'SUZANO.{unity}_0000' + model['SAP'].astype(str)
+  model['RATE_OFFERING_GID']           = f'SUZANO.{unity_name}_0000' + model['SAP'].astype(str)
   model['IS_SOURCING_RATE']            = 'N'
   model['IS_FROM_BEYOND']              = 'Y'
   model['RATE_GEO_DESC']               = 'SAW'
@@ -54,13 +59,15 @@ def build_model_rg(model, unity):
   if unity == 'UNPE':
     equipms = equipms_unpe
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
+  elif unity == 'UNPE_CABOTAGEM':
+    model['RATE_GEO_GID'] = f'SUZANO.{unity_name}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
   elif unity == 'UNBC':
     equipms = equipms_unbc
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   elif unity == 'UNC':
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
 
-  if unity != 'UNC':
+  if unity != 'UNC' and unity != 'UNPE_CABOTAGEM':
     model = rate_offering_gid(model, unity, equipms)
 
   model                 = model[~model['RATE_GEO_GID'].isna()]
@@ -71,6 +78,22 @@ def build_model_rg(model, unity):
     model = suz_mult(model)
 
   return model
+
+def build_model_rgcg(model):
+  columns_rgcg = ['RATE_GEO_COST_GROUP_GID', 'RATE_GEO_COST_GROUP_XID', 'RATE_GEO_GID', 'GROUP_NAME', 'DEFICIT_CALCULATIONS_TYPE', 'MULTI_RATES_RULE', 'RATE_GROUP_TYPE', 'ROUNDING_TYPE', 'ROUNDING_INTERVAL', 'ROUNDING_FIELDS_LEVEL', 'ROUNDING_APPLICATION', 'DOMAIN_NAME']
+  new_row      = pd.DataFrame([["EXEC SQL ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"] + [np.nan] * (len(columns_rgcg) - 1)], columns=columns_rgcg)
+  df_rgcg      = pd.concat([new_row, pd.DataFrame(columns=columns_rgcg)], ignore_index=True)
+  modelcg      = pd.DataFrame(columns=columns_rgcg)
+
+  modelcg['RATE_GEO_COST_GROUP_GID'] = model['RATE_GEO_GID'].copy()
+  modelcg['RATE_GEO_COST_GROUP_XID'] = model['RATE_GEO_XID'].copy()
+  modelcg['ROUNDING_APPLICATION']    = 'A'
+  modelcg['MULTI_RATES_RULE']        = 'X'
+  modelcg['RATE_GROUP_TYPE']         = 'M'
+  modelcg['ROUNDING_TYPE']           = 'N'
+  modelcg['RATE_GEO_GID']            = model['RATE_GEO_GID'].copy()
+  modelcg['DOMAIN_NAME']             = 'SUZANO'
+  return df_rgcg, modelcg
 
 def min_cost_calculation(model, unity):
   if unity == 'UNC':

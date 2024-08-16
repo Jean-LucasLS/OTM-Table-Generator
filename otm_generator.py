@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from dicts import origens, veiculos_unbc
-from sat_funcs import not_mapped_check, build_model_rg, min_cost_calculation, rate_geo_cost_cols, multicoleta
+from sat_funcs import not_mapped_check, build_model_rg, build_model_rgcg, min_cost_calculation, rate_geo_cost_cols, multicoleta
 
 def rate_geo(model, unity):
   #### Not-mapped origins verifying ####
@@ -18,19 +18,7 @@ def rate_geo(model, unity):
   rate_geo = pd.concat([df_rg, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO', 'FRETE'])], ignore_index=True)
 
   #### Creating rate_geo_cost_group (df_rgcg) based on rate_geo ####
-  columns_rgcg = ['RATE_GEO_COST_GROUP_GID', 'RATE_GEO_COST_GROUP_XID', 'RATE_GEO_GID', 'GROUP_NAME', 'DEFICIT_CALCULATIONS_TYPE', 'MULTI_RATES_RULE', 'RATE_GROUP_TYPE', 'ROUNDING_TYPE', 'ROUNDING_INTERVAL', 'ROUNDING_FIELDS_LEVEL', 'ROUNDING_APPLICATION', 'DOMAIN_NAME']
-  new_row      = pd.DataFrame([["EXEC SQL ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"] + [np.nan] * (len(columns_rgcg) - 1)], columns=columns_rgcg)
-  df_rgcg      = pd.concat([new_row, pd.DataFrame(columns=columns_rgcg)], ignore_index=True)
-  modelcg      = pd.DataFrame(columns=columns_rgcg)
-
-  modelcg['RATE_GEO_COST_GROUP_GID'] = model['RATE_GEO_GID']
-  modelcg['RATE_GEO_COST_GROUP_XID'] = model['RATE_GEO_XID']
-  modelcg['ROUNDING_APPLICATION']    = 'A'
-  modelcg['MULTI_RATES_RULE']        = 'X'
-  modelcg['RATE_GROUP_TYPE']         = 'M'
-  modelcg['ROUNDING_TYPE']           = 'N'
-  modelcg['RATE_GEO_GID']            = model['RATE_GEO_GID']
-  modelcg['DOMAIN_NAME']             = 'SUZANO'
+  df_rgcg, modelcg = build_model_rgcg(model)
 
   if unity == 'UNPE':
     modelcg['MULTI_RATES_RULE'] = np.where(modelcg['RATE_GEO_COST_GROUP_XID'].str[:9] == 'UNPE_MULT', 'A', 'X')
@@ -54,7 +42,6 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
   model = rate_geo_cost_cols(model)
   model['CHARGE_UNIT_UOM_CODE'] = 'MTON'
   model['CHARGE_MULTIPLIER']    = 'SHIPMENT.WEIGHT'
-
 
   if min_cost:
     model = min_cost_calculation(model, unity)
@@ -84,6 +71,8 @@ def rate_geo_cost_viagem(model, unity):
 
   if unity == 'UNPE':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
+  if unity == 'UNPE_CABOTAGEM':
+    model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.UNPE_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
   if unity == 'UNBC':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   if unity == 'UNC':
