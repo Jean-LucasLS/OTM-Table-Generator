@@ -34,7 +34,6 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
 
   rate_geo_cost_ton = pd.concat([df_rgct, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].isna()]
-
   return rate_geo_cost_ton.to_csv(index=False), df_mults
 
 def rate_geo_cost_viagem(model, unity):
