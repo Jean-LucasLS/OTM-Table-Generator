@@ -46,23 +46,23 @@ def main():
     ## Convert model into OTM Tables and create download buttons after file upload ##
     col1, col2, col3, col4, col5, col6 = st.columns([0.75, 1, 1, 0.8, 1, 2])
     with col1:
-      csv_rate_geo, csv_rate_geo_cost_group, not_mapped = rate_geo(model=df, unity=unity)
+      csv_rate_geo, csv_rate_geo_cost_group, not_mapped = rate_geo(model=df.copy(), unity=unity)
       if st.download_button(label='Rate Geo', data=csv_rate_geo, file_name='rate_geo.csv', mime='text/csv'):
         st.toast('Rate Geo table downloaded!')
     with col2:
       if st.download_button(label='Rate Geo Cost Group', data=csv_rate_geo_cost_group, file_name='rate_geo_cost_group.csv', mime='text/csv'):
         st.toast('Rate Geo Cost Group table downloaded!')
     with col3:
-      csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df, unity=unity)
+      csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df.copy(), unity=unity)
       if st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv'):
         st.toast('Rate Geo Cost (viagem) table downloaded!')
     with col4:
       if unity != 'UNBC' and unity != 'UNPE_CABOTAGEM':
-        csv_rate_geo_cost_ton, csv_df_mults = rate_geo_cost_ton(model=df, unity=unity, min_cost=True)
+        csv_rate_geo_cost_ton, csv_df_mults = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True)
         if unity == 'UNC':
           with col5:
             min_cost_flag            = st.checkbox('min_cost')
-            csv_rate_geo_cost_ton, _ = rate_geo_cost_ton(model=df, unity=unity, min_cost=min_cost_flag)
+            csv_rate_geo_cost_ton, _ = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=min_cost_flag)
         if unity == 'UNPE':
           with col5:
             if st.download_button(label='Rate Geo Cost (ton) mult', data=csv_df_mults, file_name='rate_geo_cost_ton_mult.csv', mime='text/csv'):

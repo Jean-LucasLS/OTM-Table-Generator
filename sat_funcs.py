@@ -124,6 +124,7 @@ def format_date():
   return format_date
 
 def rate_geo_cost_cols(model):
+  model = model.rename(columns={'FRETE': 'CHARGE_AMOUNT'})
   model['EFFECTIVE_DATE'] = format_date()
   model['CHARGE_AMOUNT']  = model['CHARGE_AMOUNT'].round(2)
   model['LOW_VALUE2']     = model['DESTINO'].apply(lambda x: f'SUZANO.{x}')
