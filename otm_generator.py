@@ -13,10 +13,7 @@ def rate_geo(model, unity):
   ## Creating rate_geo_cost_group (df_rgcg) based on rate_geo ##
   rate_geo_cost_group = build_model_rgcg(model, unity)
 
-  ## Converting to .csv both files ##
-  rate_geo_csv            = rate_geo.to_csv(index=False)
-  rate_geo_cost_group_csv = rate_geo_cost_group.to_csv(index=False)
-  return rate_geo_csv, rate_geo_cost_group_csv, not_mapped
+  return rate_geo.to_csv(index=False), rate_geo_cost_group.to_csv(index=False), not_mapped
 
 def rate_geo_cost_ton(model, unity, min_cost=True):
   model = model.rename(columns={'FRETE': 'CHARGE_AMOUNT'})
@@ -46,13 +43,11 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
   rate_geo_cost_ton = pd.concat([df_rgct, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].isna()]
 
-  rate_geo_cost_ton = rate_geo_cost_ton.to_csv(index=False)
-  return rate_geo_cost_ton, df_mults
+  return rate_geo_cost_ton.to_csv(index=False), df_mults
 
 def rate_geo_cost_viagem(model, unity):
   model = model.rename(columns={'FRETE': 'CHARGE_AMOUNT'})
 
   ## Create rate_geo_cost_viagem Dataframe and .csv file ##
   rate_geo_cost_viagem = df_rgcv_cols(model, unity)
-  rate_geo_cost_viagem = rate_geo_cost_viagem.to_csv(index=False)
-  return rate_geo_cost_viagem
+  return rate_geo_cost_viagem.to_csv(index=False)
