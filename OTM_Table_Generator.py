@@ -58,11 +58,15 @@ def main():
         st.toast('Rate Geo Cost (viagem) table downloaded!')
     with col4:
       if unity != 'UNBC' and unity != 'UNPE_CABOTAGEM':
-        csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True)
+        csv_rate_geo_cost_ton, csv_df_mults = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True)
         if unity == 'UNC':
           with col5:
-            min_cost_flag         = st.checkbox('min_cost')
-            csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=min_cost_flag)
+            min_cost_flag            = st.checkbox('min_cost')
+            csv_rate_geo_cost_ton, _ = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=min_cost_flag)
+        if unity == 'UNPE':
+          with col5:
+            if st.download_button(label='Rate Geo Cost (ton) mult', data=csv_df_mults, file_name='rate_geo_cost_ton_mult.csv', mime='text/csv'):
+              st.toast('Rate Geo Cost (ton) mult table downloaded!')
         if st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv'):
           st.toast('Rate Geo Cost (ton) table downloaded!')
 
