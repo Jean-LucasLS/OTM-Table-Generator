@@ -16,8 +16,10 @@ def suz_mult(model):
   mult = mult[mult['X_LANE_GID'].str.replace('SUZANO.', '').str.replace('_BRA', '').isin(origens_mult)]
 
   mult['RATE_OFFERING_GID'] = mult['RATE_OFFERING_GID'].str.replace('UNPE', 'UNPE_MULT')
+  mult['RATE_GEO_DESC']     = 'MULT'
   mult['RATE_GEO_GID']      = mult['RATE_GEO_GID'].str.replace('UNPE', 'UNPE_MULT')
   mult['RATE_GEO_XID']      = mult['RATE_GEO_XID'].str.replace('UNPE', 'UNPE_MULT')
+
 
   model = pd.concat([model, mult], ignore_index=True)
   return model
