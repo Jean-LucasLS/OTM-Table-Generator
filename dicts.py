@@ -53,7 +53,8 @@ equipms_unbc = {
 }
 
 veiculos_unbc = {
-  'Y02': 'TRUCK', 'Y06': 'CARRETA', 'Y12': 'CARRETA', 'Y17': 'CARRETA_BI', 'Y23': 'CARRETA_BI'
+  'Y02': 'TRUCK', 'Y06': 'CARRETA', 'Y12': 'CARRETA', 'Y17': 'CARRETA_BI', 'Y23': 'CARRETA_BI',
+  'TRUCK': 'TRUCK', 'CARRETA': 'CARRETA', 'CARRETA_BI': 'CARRETA_BI'
 }
 
 min_ton = {'Y02': 12.5, 'Y06': 25, 'Y12': 25, 'Y17': 36, 'Y23': 45}
