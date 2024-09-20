@@ -37,4 +37,4 @@ def rate_geo_cost_ton(model, unity, min_cost=True):
 def rate_geo_cost_viagem(model, unity):
   rate_geo_cost_viagem = df_rgcv_cols(model, unity)
 
-  return rate_geo_cost_viagem#.to_csv(index=False)
+  return rate_geo_cost_viagem.to_csv(index=False)
