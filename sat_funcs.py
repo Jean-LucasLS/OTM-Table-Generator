@@ -194,8 +194,6 @@ def df_rgcv_cols(model, unity):
 
   model                      = rate_geo_cost_cols(model)
   model['CHARGE_MULTIPLIER'] = 'SHIPMENT'
-  if unity == 'UNPE':
-    model = multicoleta(model)
 
   rate_geo_cost_viagem = pd.concat([df_rgcv, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].isna()]
