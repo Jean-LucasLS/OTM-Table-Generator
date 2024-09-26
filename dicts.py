@@ -24,6 +24,8 @@ origens = {'FBMU': 'FAB_MUC_2100', 'FAB_MUC_2100': 'FAB_MUC_2100', # MUC
   'FJAC': 'FAB_JAC_6100', 'FAB_JAC_6100': 'FAB_JAC_6100',
   'FARA': 'FAB_ARA_6300', 'FAB_ARA_6300': 'FAB_ARA_6300',
   'FTLS': 'FAB_TLS_6800', 'FAB_TLS_6800': 'FAB_TLS_6800',
+  ## CDs ##
+  'SBHZ': 'CDL_BHT_1005',
   }
 
 origens_mult = {
