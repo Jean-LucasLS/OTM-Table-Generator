@@ -68,7 +68,7 @@ def build_model_rg(model, unity):
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
   elif unity == 'UNPE_CABOTAGEM':
     model['RATE_GEO_GID'] = f'SUZANO.{unity_name}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
-  elif unity == 'UNBC':
+  elif unity == 'UNBC' or unity == 'UNTS':
     equipms = equipms_unbc
     model['RATE_GEO_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   elif unity == 'UNC':
@@ -187,7 +187,7 @@ def df_rgcv_cols(model, unity):
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO']
   if unity == 'UNPE_CABOTAGEM':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.UNPE_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
-  if unity == 'UNBC':
+  if unity == 'UNBC' or unity == 'UNTS':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens) + '_' + model['VEICULO'].map(veiculos_unbc)
   if unity == 'UNC':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
