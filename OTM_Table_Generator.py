@@ -57,7 +57,7 @@ def main():
       if st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv'):
         st.toast('Rate Geo Cost (viagem) table downloaded!')
     with col4:
-      if unity != 'UNBC' and unity != 'UNPE_CABOTAGEM' and unity != 'UNTS':
+      if unity not in ['UNBC', 'UNPE_CABOTAGEM', 'UNTS']:
         csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True)
         if unity == 'UNC':
           with col5:
