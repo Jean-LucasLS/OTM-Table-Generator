@@ -62,4 +62,4 @@ veiculos_unbc = {
   'TRUCK': 'TRUCK', 'CARRETA': 'CARRETA', 'CARRETA_BI': 'CARRETA_BI'
 }
 
-min_ton = {'Y02': 12.5, 'Y06': 25, 'Y12': 25, 'Y17': 36, 'Y23': 45}
+min_ton = {'Y02': 12.5, 'Y06': 25, 'Y12': 25, 'Y17': 38, 'Y23': 46}
