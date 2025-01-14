@@ -69,10 +69,10 @@ def main():
         csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True)
       if unity == 'UNPE':
         csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=True, mult_flag=mult_flag)
-      if unity == 'UNC':
-        with col5:
-          min_cost_flag         = st.checkbox('min_cost')
-          csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=min_cost_flag)
+    if unity == 'UNC':
+      with col5:
+        min_cost_flag         = st.checkbox('min_cost')
+        csv_rate_geo_cost_ton = rate_geo_cost_ton(model=df.copy(), unity=unity, min_cost=min_cost_flag)
       if st.download_button(label='Rate Geo Cost (ton)', data=csv_rate_geo_cost_ton, file_name='rate_geo_cost_ton.csv', mime='text/csv'):
         st.toast('Rate Geo Cost (ton) table downloaded!')
 
