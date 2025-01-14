@@ -198,3 +198,26 @@ def df_rgcv_cols(model, unity):
   rate_geo_cost_viagem = pd.concat([df_rgcv, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].isna()]
   return rate_geo_cost_viagem
+
+def direct_mult_split(rate_geo, rate_geo_cost_group, mult_flag=False):
+  if mult_flag: # Direct charges
+    rate_geo            = rate_geo[rate_geo['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+    rate_geo_cost_group = rate_geo_cost_group[rate_geo_cost_group['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+  else: # Mult charges
+    rate_geo            = rate_geo[~rate_geo['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+    rate_geo_cost_group = rate_geo_cost_group[~rate_geo_cost_group['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+  return rate_geo, rate_geo_cost_group
+
+def direct_mult_split_ton(rate_geo_cost_ton, mult_flag=False):
+  if mult_flag: # Direct charges
+    rate_geo_cost_ton = rate_geo_cost_ton[rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
+  else: # Mult charges
+    rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
+  return rate_geo_cost_ton
+
+def direct_mult_split_viagem(rate_geo_cost_viagem, mult_flag=False):
+  if mult_flag: # Direct charges
+    rate_geo_cost_viagem = rate_geo_cost_viagem[rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
+  else: # Mult charges
+    rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
+  return rate_geo_cost_viagem
