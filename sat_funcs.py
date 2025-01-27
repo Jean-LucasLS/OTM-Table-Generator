@@ -35,7 +35,7 @@ def rate_offering_gid(model, unity, equipms):
 
   return model
 
-def build_model_rg(model, unity):
+def build_model_rg(model, unity, mult_flag=False):
   columns_rg = ['RATE_GEO_GID', 'RATE_GEO_XID', 'RATE_OFFERING_GID', 'X_LANE_GID', 'EQUIPMENT_GROUP_PROFILE_GID', 'RATE_SERVICE_GID', 'MIN_COST', 'MIN_COST_GID', 'MIN_COST_BASE', 'TOTAL_STOPS_CONSTRAINT', 'PICKUP_STOPS_CONSTRAINT', 'DELIVERY_STOPS_CONSTRAINT', 'CIRCUITY_ALLOWANCE_PERCENT', 'CIRCUITY_DISTANCE_COST', 'CIRCUITY_DISTANCE_COST_GID', 'CIRCUITY_DISTANCE_COST_BASE', 'MAX_CIRCUITY_PERCENT', 'MAX_CIRCUITY_DISTANCE', 'MAX_CIRCUITY_DISTANCE_UOM_CODE', 'MAX_CIRCUITY_DISTANCE_BASE', 'STOPS_INCLUDED_RATE', 'FLEX_COMMODITY_PROFILE_GID', 'RATE_QUALITY_GID', 'SHIPPER_MIN_VALUE', 'MIN_STOPS', 'SHORT_LINE_COST', 'SHORT_LINE_COST_GID', 'SHORT_LINE_COST_BASE', 'RATE_ZONE_PROFILE_GID', 'LOCATION_GID', 'ROUTE_CODE_GID', 'DIM_RATE_FACTOR_GID', 'EFFECTIVE_DATE', 'EXPIRATION_DATE', 'ALLOW_UNCOSTED_LINE_ITEMS', 'SHIPPER_MIN_VALUE_GID', 'MULTI_BASE_GROUPS_RULE', 'RAIL_INTER_MODAL_PLAN_GID', 'CUSTOMER_RATE_CODE', 'COFC_TOFC', 'EXPIRE_MARK_ID', 'VIA_SRC_LOC_PROF_GID', 'VIA_DEST_LOC_PROF_GID', 'VIA_SRC_LOC_GID', 'VIA_DEST_LOC_GID', 'ROUNDING_TYPE', 'ROUNDING_INTERVAL', 'ROUNDING_FIELDS_LEVEL', 'ROUNDING_APPLICATION', 'DEFICIT_CALCULATIONS_TYPE', 'BUY_SERVPROV_PROFILE_GID', 'BUY_RATE_GEO_PROFILE_GID', 'PAYMENT_METHOD_CODE_GID', 'IS_MASTER_OVERRIDES_BASE', 'HAZARDOUS_RATE_TYPE', 'IS_QUOTE', 'DOMAIN_PROFILE_GID', 'RO_TIME_PERIOD_DEF_GID', 'LOGIC_CONFIG_GID', 'ATTRIBUTE1', 'ATTRIBUTE2', 'ATTRIBUTE3', 'ATTRIBUTE4', 'ATTRIBUTE5', 'ATTRIBUTE6', 'ATTRIBUTE7', 'ATTRIBUTE8', 'ATTRIBUTE9', 'ATTRIBUTE11', 'ATTRIBUTE12', 'ATTRIBUTE13', 'ATTRIBUTE14', 'ATTRIBUTE15', 'ATTRIBUTE16', 'ATTRIBUTE17', 'ATTRIBUTE18', 'ATTRIBUTE19', 'ATTRIBUTE20', 'ATTRIBUTE_NUMBER1', 'ATTRIBUTE_NUMBER2', 'ATTRIBUTE_NUMBER3', 'ATTRIBUTE_NUMBER4', 'ATTRIBUTE_NUMBER5', 'ATTRIBUTE_NUMBER6', 'ATTRIBUTE_NUMBER7', 'ATTRIBUTE_NUMBER8', 'ATTRIBUTE_NUMBER9', 'ATTRIBUTE_NUMBER10', 'ATTRIBUTE_DATE1', 'ATTRIBUTE_DATE2', 'ATTRIBUTE_DATE3', 'ATTRIBUTE_DATE4', 'ATTRIBUTE_DATE5', 'ATTRIBUTE_DATE6', 'ATTRIBUTE_DATE7', 'ATTRIBUTE_DATE8', 'ATTRIBUTE_DATE9', 'ATTRIBUTE_DATE10', 'RATE_GEO_DESC', 'IS_FOR_BEYOND', 'IS_FROM_BEYOND', 'CORPORATION_PROFILE_GID', 'PARENT_RATE_GEO_GID', 'IS_SOURCING_RATE', 'CALC_CHARGEABLE_WT_VOL_WITH', 'DOMAIN_NAME']
   new_row    = pd.DataFrame([["EXEC SQL ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"] + [np.nan] * (len(columns_rg) - 1)], columns=columns_rg)
   df_rg      = pd.concat([new_row, pd.DataFrame(columns=columns_rg)], ignore_index=True)
@@ -83,11 +83,12 @@ def build_model_rg(model, unity):
   ## Adding mult to UNPE ##
   if unity == 'UNPE':
     model = suz_mult(model)
+    model = direct_mult_split(model, mult_flag)
 
   rate_geo = pd.concat([df_rg, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO', 'FRETE'])], ignore_index=True)
   return rate_geo, model
 
-def build_model_rgcg(model, unity):
+def build_model_rgcg(model, unity, mult_flag):
   columns_rgcg = ['RATE_GEO_COST_GROUP_GID', 'RATE_GEO_COST_GROUP_XID', 'RATE_GEO_GID', 'GROUP_NAME', 'DEFICIT_CALCULATIONS_TYPE', 'MULTI_RATES_RULE', 'RATE_GROUP_TYPE', 'ROUNDING_TYPE', 'ROUNDING_INTERVAL', 'ROUNDING_FIELDS_LEVEL', 'ROUNDING_APPLICATION', 'DOMAIN_NAME']
   new_row      = pd.DataFrame([["EXEC SQL ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD'"] + [np.nan] * (len(columns_rgcg) - 1)], columns=columns_rgcg)
   df_rgcg      = pd.concat([new_row, pd.DataFrame(columns=columns_rgcg)], ignore_index=True)
@@ -104,6 +105,7 @@ def build_model_rgcg(model, unity):
 
   if unity == 'UNPE':
     modelcg['MULTI_RATES_RULE'] = np.where(modelcg['RATE_GEO_COST_GROUP_XID'].str[:9] == 'UNPE_MULT', 'A', 'X')
+    modelcg = direct_mult_split(modelcg, mult_flag)
 
   rate_geo_cost_group = pd.concat([df_rgcg, modelcg], ignore_index=True)
   return rate_geo_cost_group
@@ -199,14 +201,12 @@ def df_rgcv_cols(model, unity):
   rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].isna()]
   return rate_geo_cost_viagem
 
-def direct_mult_split(rate_geo, rate_geo_cost_group, mult_flag=False):
+def direct_mult_split(model, mult_flag=False):
   if mult_flag: # Direct charges
-    rate_geo            = rate_geo[rate_geo['RATE_GEO_GID'].str.contains('PE_M', na=False)]
-    rate_geo_cost_group = rate_geo_cost_group[rate_geo_cost_group['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+    model = model[model['RATE_GEO_GID'].str.contains('PE_M', na=False)]
   else: # Mult charges
-    rate_geo            = rate_geo[~rate_geo['RATE_GEO_GID'].str.contains('PE_M', na=False)]
-    rate_geo_cost_group = rate_geo_cost_group[~rate_geo_cost_group['RATE_GEO_GID'].str.contains('PE_M', na=False)]
-  return rate_geo, rate_geo_cost_group
+    model = model[~model['RATE_GEO_GID'].str.contains('PE_M', na=False)]
+  return model
 
 def direct_mult_split_ton(rate_geo_cost_ton, mult_flag=False):
   if mult_flag: # Direct charges
@@ -214,10 +214,3 @@ def direct_mult_split_ton(rate_geo_cost_ton, mult_flag=False):
   else: # Mult charges
     rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
   return rate_geo_cost_ton
-
-def direct_mult_split_viagem(rate_geo_cost_viagem, mult_flag=False):
-  if mult_flag: # Direct charges
-    rate_geo_cost_viagem = rate_geo_cost_viagem[rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
-  else: # Mult charges
-    rate_geo_cost_viagem = rate_geo_cost_viagem[~rate_geo_cost_viagem['RATE_GEO_COST_GROUP_GID'].str.contains('PE_M', na=False)]
-  return rate_geo_cost_viagem

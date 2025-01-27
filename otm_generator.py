@@ -1,14 +1,13 @@
 import pandas as pd
 import numpy as np
 from dicts import origens, veiculos_unbc
-from sat_funcs import not_mapped_check, build_model_rg, build_model_rgcg, min_cost_calculation, rate_geo_cost_cols, multicoleta, df_rgcv_cols, direct_mult_split, direct_mult_split_ton, direct_mult_split_viagem
+from sat_funcs import not_mapped_check, build_model_rg, build_model_rgcg, min_cost_calculation, rate_geo_cost_cols, multicoleta, df_rgcv_cols, direct_mult_split_ton
 
 def rate_geo(model, unity, mult_flag=False):
   not_mapped          = not_mapped_check(model) # Not-mapped origins verifying
-  rate_geo, model     = build_model_rg(model, unity)
-  rate_geo_cost_group = build_model_rgcg(model, unity)
+  rate_geo, model     = build_model_rg(model, unity, mult_flag)
+  rate_geo_cost_group = build_model_rgcg(model, unity, mult_flag)
 
-  rate_geo, rate_geo_cost_group = direct_mult_split(rate_geo, rate_geo_cost_group, mult_flag)
   return rate_geo.to_csv(index=False), rate_geo_cost_group.to_csv(index=False), not_mapped
 
 def rate_geo_cost_ton(model, unity, min_cost=True, mult_flag=False):
@@ -32,17 +31,15 @@ def rate_geo_cost_ton(model, unity, min_cost=True, mult_flag=False):
   if unity == 'UNC':
     model['RATE_GEO_COST_GROUP_GID'] = f'SUZANO.{unity}_0000' + model['SAP'].astype(str) + '_' + model['ORIGEM'].map(origens)
 
+  if unity == 'UNPE':
+    model = direct_mult_split_ton(model, mult_flag)
+
   rate_geo_cost_ton = pd.concat([df_rgct, model.drop(columns=['ORIGEM', 'DESTINO', 'SAP', 'VEICULO'])], ignore_index=True)
   rate_geo_cost_ton = rate_geo_cost_ton[~rate_geo_cost_ton['RATE_GEO_COST_GROUP_GID'].isna()]
 
-  if unity == 'UNPE':
-    rate_geo_cost_ton = direct_mult_split_ton(rate_geo_cost_ton, mult_flag)
   return rate_geo_cost_ton.to_csv(index=False)
 
-def rate_geo_cost_viagem(model, unity, mult_flag=False):
+def rate_geo_cost_viagem(model, unity):
   rate_geo_cost_viagem = df_rgcv_cols(model, unity)
-
-  if unity == 'UNPE':
-    rate_geo_cost_viagem = direct_mult_split_viagem(rate_geo_cost_viagem, mult_flag)
 
   return rate_geo_cost_viagem.to_csv(index=False)
