@@ -49,9 +49,9 @@ def rate_geo_cost_ton(model, unity, min_cost=True, mult_flag=False, opl_flag=Fal
 
   return rate_geo_cost_ton.to_csv(index=False)
 
-def rate_geo_cost_viagem(model, unity, opgl_flag=False):
+def rate_geo_cost_viagem(model, unity, opl_flag=False):
   rate_geo_cost_viagem = df_rgcv_cols(model, unity)
-  if unity == 'UNBC' and opgl_flag:
+  if unity == 'UNBC' and opl_flag:
     for col in ['RATE_GEO_COST_GROUP_GID']:
       if col in rate_geo_cost_viagem.columns:
         rate_geo_cost_viagem[col] = rate_geo_cost_viagem[col].str.replace('UNBC_', 'UNBC_OPL_', regex=False)
