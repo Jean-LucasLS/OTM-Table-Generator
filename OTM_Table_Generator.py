@@ -49,6 +49,11 @@ def main():
       with col5:
         mult_flag = st.checkbox('mult')
       csv_rate_geo, csv_rate_geo_cost_group, not_mapped = rate_geo(model=df.copy(), unity=unity, mult_flag=mult_flag)
+    elif unity == 'UNBC':
+      with col4:
+        opl_flag = st.checkbox('OPL')
+      csv_rate_geo, csv_rate_geo_cost_group, not_mapped = rate_geo(model=df.copy(), unity=unity, opl_flag=opl_flag)
+      
     else:
       csv_rate_geo, csv_rate_geo_cost_group, not_mapped = rate_geo(model=df.copy(), unity=unity)
     with col1:
@@ -58,7 +63,10 @@ def main():
       if st.download_button(label='Rate Geo Cost Group', data=csv_rate_geo_cost_group, file_name='rate_geo_cost_group.csv', mime='text/csv'):
         st.toast('Rate Geo Cost Group table downloaded!')
     with col3:
-      csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df.copy(), unity=unity)
+      if unity == 'UNBC':
+        csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df.copy(), unity=unity, opl_flag=opl_flag)
+      else:
+        csv_rate_geo_cost_viagem = rate_geo_cost_viagem(model=df.copy(), unity=unity)
       if st.download_button(label='Rate Geo Cost (viagem)', data=csv_rate_geo_cost_viagem, file_name='rate_geo_cost_viagem.csv', mime='text/csv'):
         st.toast('Rate Geo Cost (viagem) table downloaded!')
     with col4:
