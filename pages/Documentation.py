@@ -88,10 +88,10 @@ origens_data = {
                'AMZ_SZL_1101', 'AMZ_DTR_1101', 'AMZ_DIN_1101', 'FAB_SUZ_1101', 'FAB_RVD_1102', 'CDR_SUZ_1062', 'CDL_SUZ_1112',
                'CDL_CAR_1063', 'FAB_CIT_1064', 'FAB_MOG_1110', 'CDL_ARU_1111', 'FAB_IMP_1301', 'CDL_MAR_2280', 'FAB_BEL_2283', 
                'FAB_RIB_2298', 'FAB_JAC_6100', 'FAB_ARA_6300', 'FAB_TLS_6800', 'CDL_BHT_1005'],
-    '📝 Descrição': ['MUCURI', 'CAMAÇARI', 'AMAZÔNIA', 'LIMEIRA', 'COPACABANA', 'PINHAIS', 'SUZANO 1', 'SUZANO LESTE', 
-                     'DISTRIBUIÇÃO', 'INFINITO', 'SUZANO', 'RIO VERDE', 'CD SUZANO', 'CD SUZANO',
+    '📝 Descrição': ['MUCURI', 'CAMPINAS', 'AMERICANA', 'LIMEIRA', 'ARUJÁ', 'ITAPEVI', 'SUZANLOG 2', 'SUZANLOG', 
+                     'GUARULHOS', 'GUARULHOS', 'SUZANO', 'RIO VERDE (SUZANO)', 'CD SUZANO', 'CD SUZANO',
                      'CD CARIACICA', 'CACHOEIRO DE ITAPEMIRIM', 'MOGI DAS CRUZES', 'CD ARUJÁ', 'IMPERATRIZ', 'CD MARACANAÚ', 
-                     'BELÉM', 'RIBEIRÃO PRETO', 'JACAREÍ', 'ARACRUZ', 'TRÊS LAGOAS', 'CD BELO HORIZONTE']
+                     'BELÉM', 'RIBAS DO RIO PARDO', 'JACAREÍ', 'ARACRUZ', 'TRÊS LAGOAS', 'CD BELO HORIZONTE']
 }
 
 origens_df = pd.DataFrame(origens_data)
