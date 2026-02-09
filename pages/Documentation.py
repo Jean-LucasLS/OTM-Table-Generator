@@ -78,6 +78,28 @@ with col5:
 
 st.divider()
 
+st.subheader('📑 Dicionário de Origens')
+st.markdown('📌 Lista completa das :green-background[origens cadastradas no sistema] - formato :blue-background[SAP → OTM]')
+
+origens_data = {
+    '🏢 SAP': ['FBMU', 'DCAM', 'DMBM', 'FRPL', 'DCOP', 'DPNS', 'DSU1', 'DSUZ', 'DTRI', 'DINF', 'FSCB', 'FSCC', 'CDRZ', 'SSUZ', 
+               'SVIA', 'FCIT', 'FBMO', 'SARU', 'FBMA', 'SMAR', 'FCBL', 'FBRP', 'FJAC', 'FARA', 'FTLS', 'SBHZ'],
+    '🏭 OTM': ['FAB_MUC_2100', 'AMZ_CAM_5400', 'AMZ_AMA_5400', 'FAB_LIM_5400', 'AMZ_DCO_1101', 'AMZ_PNS_1101', 'AMZ_SZ1_1101', 
+               'AMZ_SZL_1101', 'AMZ_DTR_1101', 'AMZ_DIN_1101', 'FAB_SUZ_1101', 'FAB_RVD_1102', 'CDR_SUZ_1062', 'CDL_SUZ_1112',
+               'CDL_CAR_1063', 'FAB_CIT_1064', 'FAB_MOG_1110', 'CDL_ARU_1111', 'FAB_IMP_1301', 'CDL_MAR_2280', 'FAB_BEL_2283', 
+               'FAB_RIB_2298', 'FAB_JAC_6100', 'FAB_ARA_6300', 'FAB_TLS_6800', 'CDL_BHT_1005'],
+    '📝 Descrição': ['MUCURI', 'CAMAÇARI', 'AMAZÔNIA', 'LIMEIRA', 'COPACABANA', 'PINHAIS', 'SUZANO 1', 'SUZANO LESTE', 
+                     'DISTRIBUIÇÃO', 'INFINITO', 'SUZANO', 'RIO VERDE', 'CD SUZANO', 'CD SUZANO',
+                     'CD CARIACICA', 'CACHOEIRO DE ITAPEMIRIM', 'MOGI DAS CRUZES', 'CD ARUJÁ', 'IMPERATRIZ', 'CD MARACANAÚ', 
+                     'BELÉM', 'RIBEIRÃO PRETO', 'JACAREÍ', 'ARACRUZ', 'TRÊS LAGOAS', 'CD BELO HORIZONTE']
+}
+
+origens_df = pd.DataFrame(origens_data)
+st.dataframe(origens_df, hide_index=True, use_container_width=True)
+st.markdown('📌 :orange-background[Contato com SupriLog] necessário para adição de novas origens')
+
+st.divider()
+
 st.subheader('📑 Especificidade das tabelas por Unidade de Negócio')
 st.markdown('📌 As tabelas geradas contemplam a as :green-background[particularidades de cada Unidade de Negócio], sendo possível de :blue-background[selecionar a UN desejada]')
 col1, col2 = st.columns([3, 7])
