@@ -12,7 +12,6 @@ apply_basic_style()
 
 st.header(body='📜 Documentation 🗃️', divider='green')
 st.text('')
-st.caption('Guia rápido de preenchimento e validações da tabela modelo.')
 
 col1, col2 = st.columns([4, 1])
 with col1:
