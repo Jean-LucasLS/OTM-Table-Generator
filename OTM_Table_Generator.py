@@ -7,11 +7,10 @@ from ui.sample_data import get_template_model_df
 from ui.styles import apply_basic_style
 from ui.table_configs import model_table_column_config, not_mapped_column_config
 
-st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
 def main():
   apply_basic_style()
-  st.header(body='🤖 OTM Table Generator - SupriLog 📤', divider='green'); st.text('')
+  st.header(body='⚙️ OTM Table Generator — SupriLog', divider='green'); st.text('')
 
   col1, col2, col3,= st.columns([3, 5, 2])
   with col1:
