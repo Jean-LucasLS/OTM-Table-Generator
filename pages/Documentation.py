@@ -2,17 +2,11 @@ import streamlit as st
 
 from ui.documentation_data import get_documentation_examples, get_origens_df
 from ui.excel_utils import to_excel
-from ui.styles import apply_basic_style
 from ui.table_configs import doc_duplicate_table_column_config, doc_frete_column_config, model_table_column_config
 
 
 def render():
   model, model2, model3, model4, model5 = get_documentation_examples()
-
-  apply_basic_style()
-
-  st.header(body='📜 Documentation', divider='green')
-  st.text('')
 
   col1, col2 = st.columns([4, 1])
   with col1:

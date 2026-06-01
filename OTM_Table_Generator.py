@@ -3,14 +3,10 @@ import streamlit as st
 
 from otm_core.otm_generator import rate_geo, rate_geo_cost_ton, rate_geo_cost_viagem
 from ui.excel_utils import to_excel
-from ui.styles import apply_basic_style
 from ui.table_configs import get_template_model_df, model_table_column_config, not_mapped_column_config
 
 
 def main():
-  apply_basic_style()
-  st.header(body='⚙️ OTM Table Generator — SupriLog', divider='green'); st.text('')
-
   col1, col2, col3,= st.columns([3, 5, 2])
   with col1:
     unity = st.selectbox('Escolha a Unidade de Negócio:', ('UNPE', 'UNPE_CABOTAGEM', 'UNBC', 'UNC', 'UNTS'))

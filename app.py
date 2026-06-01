@@ -2,8 +2,12 @@ import streamlit as st
 
 from OTM_Table_Generator import main as render_generator
 from pages.Documentation import render as render_documentation
+from ui.styles import apply_basic_style
 
 st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
+
+apply_basic_style()
+st.header(body='⚙️ OTM Table Generator — SupriLog', divider='green')
 
 tab1, tab2 = st.tabs(['⚙️ OTM Table Generator', '📜 Documentation'])
 
