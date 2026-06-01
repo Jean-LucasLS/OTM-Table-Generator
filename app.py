@@ -1,9 +1,14 @@
 import streamlit as st
 
+from OTM_Table_Generator import main as render_generator
+from pages.Documentation import render as render_documentation
+
 st.set_page_config(page_title='OTM Table Generator', page_icon='🤖', layout='wide')
 
-pg = st.navigation([
-    st.Page('OTM_Table_Generator.py', title='OTM Table Generator', icon='⚙️'),
-    st.Page('pages/Documentation.py', title='Documentation',       icon='📜'),
-])
-pg.run()
+tab1, tab2 = st.tabs(['⚙️ OTM Table Generator', '📜 Documentation'])
+
+with tab1:
+    render_generator()
+
+with tab2:
+    render_documentation()
