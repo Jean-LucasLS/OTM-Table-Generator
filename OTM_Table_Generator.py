@@ -3,9 +3,8 @@ import streamlit as st
 
 from otm_core.otm_generator import rate_geo, rate_geo_cost_ton, rate_geo_cost_viagem
 from ui.excel_utils import to_excel
-from ui.sample_data import get_template_model_df
 from ui.styles import apply_basic_style
-from ui.table_configs import model_table_column_config, not_mapped_column_config
+from ui.table_configs import get_template_model_df, model_table_column_config, not_mapped_column_config
 
 
 def main():

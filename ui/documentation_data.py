@@ -1,7 +1,7 @@
 import pandas as pd
 
 from otm_core.dicts import origens
-from ui.sample_data import get_template_model_df
+from ui.table_configs import get_template_model_df
 
 OTM_DESCRICOES = {
   'FAB_MUC_2100': 'MUCURI',
