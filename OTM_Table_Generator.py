@@ -17,7 +17,7 @@ def main():
   with col3:
     model = get_template_model_df()
     model = to_excel(model)
-    if st.download_button(label='📥 model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download da tabela modelo'):
+    if st.download_button(label='📥 model.xlsx', data=model, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download da tabela modelo', key='model_download_generator'):
       st.toast('Model table downloaded!')
 
   st.text(''); col1, col2 = st.columns([2, 2])

@@ -19,7 +19,7 @@ def render():
     st.subheader('Utilização da tabela modelo')
   with col2:
     model_excel = to_excel(model)
-    if st.download_button(label='📥 model.xlsx', data=model_excel, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download da tabela modelo'):
+    if st.download_button(label='📥 model.xlsx', data=model_excel, file_name='model.xlsx', mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', help='Download da tabela modelo', key='model_download_documentation'):
       st.toast('Model table downloaded!')
   st.markdown('📌 As colunas são :green-background[ORIGEM | DESTINO | SAP | VEICULO | FRETE], e :red-background[acusarão erro] caso não estejam neste formato')
   st.dataframe(model, hide_index=True, column_config=model_table_column_config())
