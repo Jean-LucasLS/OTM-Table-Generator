@@ -7,7 +7,7 @@ from ui.table_configs import get_template_model_df, model_table_column_config, n
 
 
 def main():
-  col1, col2, col3,= st.columns([3, 5, 2], vertical_alignment='bottom', horizontal_alignment='right')
+  col1, col2, col3,= st.columns([3, 5, 2], vertical_alignment='center')
   with col1:
     unity = st.selectbox('Escolha a Unidade de Negócio:', ('UNPE', 'UNPE_CABOTAGEM', 'UNBC', 'UNC', 'UNTS'))
   with col3:
