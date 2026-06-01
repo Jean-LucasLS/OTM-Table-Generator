@@ -8,7 +8,7 @@ from ui.table_configs import doc_duplicate_table_column_config, doc_frete_column
 def render():
   model, model2, model3, model4, model5 = get_documentation_examples()
 
-  col1, col2 = st.columns([4, 1])
+  col1, col2 = st.columns([4, 1], vertical_alignment='center', horizontal_alignment='right')
   with col1:
     st.subheader('Utilização da tabela modelo')
   with col2:
