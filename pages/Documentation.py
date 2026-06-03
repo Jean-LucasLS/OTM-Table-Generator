@@ -65,7 +65,7 @@ def render():
   st.subheader('Dicionário de Origens')
   st.markdown('📌 Lista completa das :green-background[origens cadastradas no sistema] - formato :blue-background[SAP → OTM]')
   origens_df = get_origens_df()
-  st.dataframe(origens_df, hide_index=True, use_container_width=True)
+  st.dataframe(origens_df, hide_index=True, width='stretch')
   st.markdown('📌 :orange-background[Contato com SupriLog] necessário para adição de novas origens')
 
   st.text('')

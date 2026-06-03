@@ -1,3 +1,4 @@
+import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 
@@ -9,6 +10,7 @@ CD_SUZANO_ORIGENS     = ['SSUZ', 'CDL_SUZ_1112']
 
 
 def min_cost_calculation(model, unity):
+  model['CHARGE_AMOUNT'] = pd.to_numeric(model['CHARGE_AMOUNT'], errors='coerce')
   if unity == 'UNC':
     model['MIN_COST'] = model['CHARGE_AMOUNT'] * 25
   else:
